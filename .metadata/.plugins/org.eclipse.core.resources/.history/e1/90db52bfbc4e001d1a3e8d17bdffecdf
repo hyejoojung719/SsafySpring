@@ -1,0 +1,12 @@
+package com.ssafy.mvc.controller;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+public class ExceptionController {
+
+	@ExceptionHandler(Exception.class)
+	public String handleException() {
+		return ;
+	}
+
+}

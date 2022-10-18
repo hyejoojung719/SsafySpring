@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- kor, eng 객체 두 개 관리해줘 -->
+	<!-- HelloMessageKor kor = new HelloMessageKor(); id => 객체명, name => 이름을 
+		여러 개 설정 할 수 있음 -->
+	<bean id="kor" name="hkor, hellokor" class="com.ssafy.hello.di4.HelloMessageKor"></bean>
+	<bean id="eng" class="com.ssafy.hello.di4.HelloMessageEng" 
+		init-method="init"></bean>
+		<!-- 2. init-method를 추가하면 객체를 생성하고 나서 초기화 -->
+	<!-- 
+		propotype을 설정하면 객체가 싱글톤이 아닌 생성할 때 마다 만들게 할 수 있다.
+		DTO 같은 경우 싱글톤을 안 씀
+		<bean id="eng" class="com.ssafy.hello.di4.HelloMessageEng" scope="propotype"></bean>
+	 -->
+</beans>
