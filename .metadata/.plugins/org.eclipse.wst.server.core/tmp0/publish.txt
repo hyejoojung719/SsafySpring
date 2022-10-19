@@ -1,4 +1,5 @@
 #Tomcat publish data
-#Wed Oct 19 00:34:16 KST 2022
+#Wed Oct 19 16:17:55 KST 2022
 org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\fixup\\.m2\\repository\\org\\springframework\\spring-web\\5.2.2.RELEASE\\spring-web-5.2.2.RELEASE.jar=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Simple_MVC\\WEB-INF\\lib\\spring-web-5.2.2.RELEASE.jar
-org.eclipse.jst.jee.server\:Simple_MVC=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Simple_MVC
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\SSAFY\\.m2\\repository\\org\\springframework\\spring-web\\5.3.23\\spring-web-5.3.23.jar=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Practice\\WEB-INF\\lib\\spring-web-5.3.23.jar
+org.eclipse.jst.jee.server\:Practice=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Practice
