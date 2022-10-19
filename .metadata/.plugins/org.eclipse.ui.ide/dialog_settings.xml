@@ -111,6 +111,7 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\SSAFY\Desktop\SsafySpring\board1_springmvc"/>
 			<item value="C:\Users\fixup\Desktop\ssafyLearn\SsafySpring\hello_di"/>
 			<item value="C:\Users\fixup\Desktop\ssafyLearn\SsafySpring\spring_di1_xmlconfig"/>
 			<item value="C:\Users\fixup\Desktop\ssafyLearn\SsafySpring\Simple_MVC"/>
