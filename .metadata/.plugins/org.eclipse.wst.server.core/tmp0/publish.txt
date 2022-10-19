@@ -1,5 +1,6 @@
 #Tomcat publish data
-#Wed Oct 19 17:13:22 KST 2022
+#Wed Oct 19 17:31:30 KST 2022
 org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\fixup\\.m2\\repository\\org\\springframework\\spring-web\\5.2.2.RELEASE\\spring-web-5.2.2.RELEASE.jar=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Simple_MVC\\WEB-INF\\lib\\spring-web-5.2.2.RELEASE.jar
-org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\SSAFY\\.m2\\repository\\org\\springframework\\spring-web\\5.3.23\\spring-web-5.3.23.jar=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\CarProject\\WEB-INF\\lib\\spring-web-5.3.23.jar
-org.eclipse.jst.jee.server\:CarProject=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\CarProject
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\SSAFY\\.m2\\repository\\org\\springframework\\spring-web\\5.3.23\\spring-web-5.3.23.jar=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\CarProject_1019\\WEB-INF\\lib\\spring-web-5.3.23.jar
+org.eclipse.jst.jee.server\:CarProject_1019=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\CarProject_1019
+org.eclipse.jst.jee.server\:board1_springmvc=C\:\\SSAFY\\spring-tool-suite-3.9.14.RELEASE-e4.15.0-win32-x86_64\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\board1_springmvc
