@@ -54,4 +54,30 @@ public class CarDaoImpl implements CarDao{
 		}
 	}
 
+	@Override
+	public int regiCar(Car car) throws SQLException {
+		// TODO Auto-generated method stub
+	
+		String sql = "insert into car values(?,?,?,?)";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, car.getNumber());
+			pstmt.setString(2, car.getModel());
+			pstmt.setInt(3, car.getPrice());
+			pstmt.setString(4, car.getBrand());
+			
+			return pstmt.executeUpdate();
+		} finally {
+			// TODO: handle finally clause
+			if(pstmt!=null) pstmt.close();
+			if(conn!=null) conn.close();
+		}
+	}
+
 }

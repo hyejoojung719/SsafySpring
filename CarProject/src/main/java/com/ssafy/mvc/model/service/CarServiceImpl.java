@@ -20,4 +20,10 @@ public class CarServiceImpl implements CarService{
 		return carDao.selectAll();
 	}
 
+	@Override
+	public int regiCar(Car car) throws SQLException {
+		// TODO Auto-generated method stub
+		return carDao.regiCar(car);
+	}
+
 }

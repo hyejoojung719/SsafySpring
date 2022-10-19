@@ -11,5 +11,7 @@
 	홈페이지  
 </h1>
 <a href="${pageContext.request.contextPath}/car/list">차 목록 조회</a>
+<br>
+<a href="${pageContext.request.contextPath}/car/goRegi">차 정보 등록</a>
 </body>
 </html>

@@ -8,4 +8,6 @@ import com.ssafy.mvc.dto.Car;
 public interface CarDao {
 
 	List<Car> selectAll() throws SQLException;
+	
+	int regiCar(Car car) throws SQLException;
 }

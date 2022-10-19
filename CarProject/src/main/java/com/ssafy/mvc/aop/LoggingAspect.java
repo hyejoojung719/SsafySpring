@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LoggingAspect {
 	
 	
-	 @Before(value="execution(* com.ssafy.mvc.model.service.*.*(..)) || execution(* com.ssafy.mvc.controller.*.*(..))")
+	@Before(value="execution(* com.ssafy.mvc.model.service.*.*(..)) || execution(* com.ssafy.mvc.controller.*.*(..))")
 	public void logging(JoinPoint jp) {
 		
 		Signature sig = jp.getSignature();	// 메소드에 대한 설명 정보
@@ -25,15 +25,15 @@ public class LoggingAspect {
 		log.debug("메서드 선언부: {}, 전달 파라미터: {}", sig, args);
 	}
 	
-	 @Around(value="execution(* com.ssafy.mvc.model.dao.CarDaoImpl.selectAll())")	// 메소드 실행되는지 얼마나 걸리는지 알 수 있음
-	 public Object calcTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		 // 원래 메소드를 실행하는 코드
-		 long start = System.currentTimeMillis();
-		 Object result = proceedingJoinPoint.proceed();
-		 long end =  System.currentTimeMillis();
-		 
-		 log.debug("수행 시간 : {} ", end-start);
-		 
-		 return result;
-	 }
+//	 @Around(value="execution(* com.ssafy.mvc.model.dao.CarDaoImpl.selectAll())")	// 메소드 실행되는지 얼마나 걸리는지 알 수 있음
+//	 public Object calcTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+//		 // 원래 메소드를 실행하는 코드
+//		 long start = System.currentTimeMillis();
+//		 Object result = proceedingJoinPoint.proceed();
+//		 long end =  System.currentTimeMillis();
+//		 
+//		 log.debug("수행 시간 : {} ", end-start);
+//		 
+//		 return result;
+//	 }
 }
