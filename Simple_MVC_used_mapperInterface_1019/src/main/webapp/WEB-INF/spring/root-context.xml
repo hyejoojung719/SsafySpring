@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- DataSource 빈 등록 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property value="com.mysql.cj.jdbc.Driver"
+			name="driverClass"></property>
+		<property
+			value="jdbc:mysql://localhost:3306/bookdb?serverTimezone=UTC"
+			name="url"></property>
+		<property value="ssafy" name="username"></property>
+		<property value="ssafy" name="password"></property>
+	</bean>
+	
+	<!-- ApplicationContextHolder 빈 등록 -->
+	<bean class="com.ssafy.mvc.ApplicationContextHolder"></bean>
+
+	<context:component-scan base-package="com.ssafy.mvc.model,com.ssafy.mvc.aop"></context:component-scan>
+	
+	<!-- 빈등록 시, 자동으로 프록시 객체 생성 가능하게 해줌(PointCut으로 지정된 클래스의 경우) -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- mybatis 설정  -->
+	<!-- 1. sqlSessionFactory 빈 등록 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- DataSource -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- typeAlias -->
+		<property name="typeAliasesPackage" value="com.ssafy.mvc.dto"></property>
+		<!-- mapper.xml의 경로 -->
+		<property name="mapperLocations" value="classpath:mapper/*.xml" ></property>
+	</bean>
+	<!-- 2. SqlSession 빈 등록 -->
+	<!-- <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean> -->
+	
+	<!-- mybatis mapper 빈 등록 -->
+	<mybatis-spring:scan base-package="com.ssafy.mvc.model.mapper"/>
+	
+</beans>

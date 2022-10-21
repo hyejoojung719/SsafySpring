@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.mvc.model.mapper.BookMapper">
+
+	<select id="selectAll" resultType="book">
+		select isbn, title, author, price 
+		from book
+	</select>
+
+	<!--  insert, delete, update는 resulttype이 없다. 무조건 숫자니까~! -->
+	<insert id="insertBook" parameterType="book">
+		insert into book (isbn, title, author, price, description)
+		values (#{isbn}, #{title}, #{author}, #{price}, #{description})	<!-- #{}여기 안에는 getter의 이름을 담는것! -->
+	</insert>
+	
+	<insert id="insertFileInfo" parameterType="book">
+		insert into fileInfo (isbn, saveFolder, saveFile, originFile)
+		values (#{fileInfo.isbn}, #{fileInfo.saveFolder}, #{fileInfo.saveFile}, #{fileInfo.originFile})
+	</insert>
+</mapper>
