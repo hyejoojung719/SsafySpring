@@ -100,12 +100,8 @@ public class BoardController {
 	}
 
 	@GetMapping("/list")
-	// pgno=1, key="", word="" 로 넘어간다 
-	
-	// 매개 변수? Parameter(dto, String, primitivedata, Map), model(Model, Model&Map, Map)
-	// 메소드의 return 타입으로 쓸 수 있는 것은? 보통 String, ModelAndView 많이 씀
 	public ModelAndView list(@RequestParam Map<String, String> map) throws Exception {
-		logger.debug("list parameter pgno : {}", map.get("pgno"));
+		logger.debug("list parameter : {}", map);
 		ModelAndView mav = new ModelAndView();
 //		try {
 		List<BoardDto> list = boardService.listArticle(map);
@@ -165,7 +161,7 @@ public class BoardController {
 	public String delete(@RequestParam("articleno") int articleNo, @RequestParam Map<String, String> map,
 			RedirectAttributes redirectAttributes) throws Exception {
 		logger.debug("delete articleNo : {}", articleNo);
-		boardService.deleteArticle(articleNo);
+		boardService.deleteArticle(articleNo, servletContext.getRealPath("/upload"));
 		redirectAttributes.addAttribute("pgno", map.get("pgno"));
 		redirectAttributes.addAttribute("key", map.get("key"));
 		redirectAttributes.addAttribute("word", map.get("word"));
