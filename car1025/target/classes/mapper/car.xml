@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.car.model.mapper.CarMapper">
+	
+	<!-- 차 목록 불러오기 -->
+	<select id="selectAll" resultType="cardto">
+		select number, model, price, brand
+		from car
+	</select>
+	
+	<!--  차 등록하기 -->
+	<insert id="regist" parameterType="cardto">
+		insert into car (number, model, price, brand)
+		values (#{number}, #{model}, #{price}, #{brand})
+	</insert>
+	
+	<insert id="insertFileInfo" parameterType="cardto">
+		insert into fileInfo (number, saveFolder, originFile, saveFile)
+		values (#{fileInfo.number}, #{fileInfo.saveFolder}, #{fileInfo.originFile}, #{fileInfo.saveFile})
+	</insert>
+</mapper>

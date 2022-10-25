@@ -4,15 +4,18 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
 	<!-- DataSource 빈 등록 -->
-	<bean id="dataSource"
+	<!--  Spring 쪽에서 Connection Pool 관리 -->
+	<!-- <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property value="com.mysql.cj.jdbc.Driver"
 			name="driverClass"></property>
@@ -21,6 +24,11 @@
 			name="url"></property>
 		<property value="ssafy" name="username"></property>
 		<property value="ssafy" name="password"></property>
+	</bean> -->
+	
+	<!-- 톰캣에서 관리중인 객체 가져오기 -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/ssafy"></property>
 	</bean>
 	
 	<!-- ApplicationContextHolder 빈 등록 -->
@@ -47,6 +55,19 @@
 	</bean> -->
 	
 	<!-- mybatis mapper 빈 등록 -->
-	<mybatis-spring:scan base-package="com.ssafy.mvc.model.mapper"/>
+	<!-- 정리1. mybatis-spring:scan은 base 패키지 안에있는 모든 인터페이스에대해 mapper 빈으로 등록함 -->
+	<!-- 정리2. annotation 속성을 통해 설정된 어노테이션으로 내가 원하는 인터페이스만 mapper 빈으로 등록 가능하다. -->
+	<!-- <mybatis-spring:scan base-package="com.ssafy.mvc.model.mapper"/> -->
+	<mybatis-spring:scan base-package="com.ssafy.mvc.model"
+				annotation="org.apache.ibatis.annotations.Mapper"/> 
+				<!-- (annotation빼고 실행 시)service까지 mapper로 등록되므로 이렇게하면 안됨. 그래서 annotation 속성을 추가해준다.-->
+				
+	<!-- 트랜잭션 설정 -->
+	<!-- transaction manager 빈 등록 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- @Transactional 사용을 위한 설정  -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 </beans>

@@ -31,7 +31,7 @@ public class HomeController {
 			
 			String[] beanNames = ac.getBeanDefinitionNames();
 			for(int i=0; i<beanNames.length; i++) {
-//				logger.debug("{}번 빈이름 : {}", i, beanNames[i] );
+				logger.debug("{}번 빈이름 : {}", i, beanNames[i] );
 			}
 			
 			BookService b =  (BookService) ac.getBean("bookServiceImpl");

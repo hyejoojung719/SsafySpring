@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.webex.model.mapper.WorldMapper">
+
+	<!-- 도시 정보 등록하고 등록된 도시의 ID값 가져오기 -->
+	<!-- dto 는 type alias 지정 되어 있음 -->
+	<insert id="insertCity" parameterType="city">
+		insert into city (name, countrycode, district, population)
+		values
+		(#{name}, #{countryCode}, #{district}, #{population})
+		<!-- #{}안에는 getter의 get을 제외한 이름 넣기 -->
+
+		<!-- 조회된 정보의 id값 -->
+		<!-- AFTER -> insert를 마친 후에 -->
+		<!-- keyProperty에 파라미터 객체의 속성 중 정보를 담을 컬럼 지정 -->
+		<!-- <selectKey keyProperty="id" resultType="int" order="AFTER"> select 
+			last_insert_id() </selectKey> -->
+		<selectKey keyProperty="id,population" resultType="city"
+			order="AFTER">
+			select id, population
+			from city
+			where countrycode="KOR"
+			limit 1
+		</selectKey>
+		<!-- selectkey를 사용하면 게시글 등록 후 파일 등록 할때 등록한 게시글의 id값을 가져올수있당 -->
+	</insert>
+	
+	<!-- <where> 사용 -->
+		<!-- <select>
+			select *
+			from city
+			<where>
+				첫 번째 조건이 없을 경우 and가 사라짐 
+				<if test="name!=null">name값이 null이 아닐때 name = #{name}</if>
+				<if test="population>0">and population = #{name}</if>
+			</where>
+		</select> -->
+	
+	<!--  set 사용 -->
+	<update id="updateLastCity" parameterType="city">
+		update city
+		<set>
+			<!-- choose - whene, otherwise도 가능 -->
+			<if test="name!=null">name=#{name},</if> 
+           	<if test="district!=null">district=#{district},</if>
+           	<if test="population>0">population=#{population},</if>
+		</set>
+		where id=#{id}
+		<!-- update 구문 실행되기 전에 city객체에 id 정보 추가 -->
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select max(id) from city
+		</selectKey>
+	</update>
+	
+	<!-- 반복적으로 사용할 쿼리문을 저장  -->
+	<sql id="selectCity">
+		select id, name, countryCode, district, population
+		from city
+	</sql>
+
+	<select id="">
+		<include refid="selectCity"></include>
+		<!--  select id, name, countryCode, district, population
+		from city 이 코드가 대신 들어감  -->
+	</select>
+	
+	<!-- 모든 나라 정보와 해당 나라의 수도 정보를 조회 (1:1관계 쪼인) -->
+	<select id="selectCoCi" resultMap="CoCi"> 
+		<!-- 반환 타입 resultType="country"로 쓰면 안 된다.-->
+		<!-- 직접 반환 타입 만들자 -->
+		select co.code, co.name co_name, co.continent, co.capital, 
+        ci.id, ci.name ci_name, ci.countryCode ci_countryCode, ci.district, ci.population
+	    from country co
+	    left join city ci
+	    on co.capital = ci.id
+	</select>
+	<resultMap type="country" id="CoCi">
+		<!-- <id>, <result> 해당 컬럼의 정보를 어떤 속성에 담을 지 정의 -->
+		<id column="code" property="code"></id>
+		<result column="co_name" property="name"/>
+		<result column="continent" property="continent"/>
+		<result column="capital" property="capital"/>
+		<!--  조인 시  1:1 관계일 때 capitalinfo 정보도 담기, javaTpe: 해당 프로퍼티의 타입 -->
+		<association property="capitalInfo" javaType="city">
+			<id column="id" property="id"/>
+            <result column="ci_name" property="name"/>
+            <result column="ci.countryCode" property="countryCode"/>
+            <result column="district" property="district"/>
+            <result column="population" property="population"/>
+		</association>
+	</resultMap>
+	
+	<!-- 각 나라와 해당 나라의 모든 언어 정보 조회 (1:N 관계 조인) -->
+	<select id="selectCoCl" resultMap="CoCl">
+		select co.code, co.name co_name, co.continent, co.capital, 
+        cl.countrycode cl_countryCode, cl.language, cl.isOfficial, cl.percentage
+        from country co
+        left join countryLanguage cl
+        on co.code = cl.countryCode
+	</select>
+	<resultMap type="country" id="CoCl">
+		<id column="code" property="code"></id>
+		<result column="co_name" property="name"/>
+		<result column="continent" property="continent"/>
+		<result column="capital" property="capital"/>
+		<!-- 속성은 멤버가 list인 경우  -->
+		<!-- ofType : collection에 담을 객체의 타입 -->
+		<collection property="languages" javaType="list" ofType="countrylanguage">
+			<id column="cl_countryCode" property="countryCode"/>
+            <id column="language" property="language"/>
+            <result column="isOfficial" property="isOfficial"/>
+            <result column="percentage" property="percentage"/>
+		</collection>
+	</resultMap>
+	
+</mapper>

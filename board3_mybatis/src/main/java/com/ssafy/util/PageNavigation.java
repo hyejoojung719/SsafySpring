@@ -4,6 +4,7 @@ public class PageNavigation {
 	/*
 	 * 총 글의 수 313 ta
 	 * 총 페이지 수 16 => tp = (ta-1)/20 +1
+	 * ex) 13페이지 => 13페이지가 속해있는 전 단 계 마지막 번호
 	 * */
 	
 	
