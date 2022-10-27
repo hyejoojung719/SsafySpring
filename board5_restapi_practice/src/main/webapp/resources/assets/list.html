@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link href="/board/assets/css/app.css" rel="stylesheet" />
+    <title>SSAFY</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-10 col-sm-12">
+          <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+            <mark class="purple">회원목록</mark>
+          </h2>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12">
+          <div class="row align-self-center mb-2">
+            <div class="col-md-2 text-start">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#registerModal"
+              >
+                회원 등록
+              </button>
+            </div>
+            <div class="col-md-5 offset-5">
+              <form class="d-flex" id="form-search" action="">
+                <input type="hidden" name="pgno" value="1" />
+                <select class="form-select form-select-sm ms-5 me-1 w-50" id="skey" name="key" aria-label="검색조건">
+                  <option value="" selected>검색조건</option>
+                  <option value="userid">아이디</option>
+                  <option value="username">이름</option>
+                  <option value="emaildomain">이메일도메인</option>
+                </select>
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control" id="sword" name="word" placeholder="검색어..." />
+                  <button id="btn-search" class="btn btn-dark" type="button">검색</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <table class="table table-hover">
+            <colgroup>
+              <col width="120" />
+              <col width="120" />
+              <col width="120" />
+              <col width="*" />
+              <!-- <col width="*"> -->
+              <col width="180" />
+              <col width="130" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="text-center">아이디</th>
+                <th class="text-center">비밀번호</th>
+                <th class="text-center">이름</th>
+                <th class="text-center">이메일</th>
+                <!-- <th class="text-center">주소</th> -->
+                <th class="text-center">가입일</th>
+                <th class="text-center">수정/삭제</th>
+              </tr>
+            </thead>
+            <tbody id="userlist"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- 회원 등록 Modal -->
+    <div
+      class="modal fade"
+      id="registerModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><mark class="purple">회원 등록</mark></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="username" class="form-label">이름 : </label>
+              <input type="text" class="form-control" id="username" placeholder="이름..." />
+            </div>
+            <div class="mb-3">
+              <label for="userid" class="form-label">아이디 : </label>
+              <input type="text" class="form-control" id="userid" placeholder="아이디..." />
+            </div>
+            <div id="idcheck-result"></div>
+            <div class="mb-3">
+              <label for="userpwd" class="form-label">비밀번호 : </label>
+              <input type="password" class="form-control" id="userpwd" placeholder="비밀번호..." />
+            </div>
+            <div class="mb-3">
+              <label for="pwdcheck" class="form-label">비밀번호확인 : </label>
+              <input type="password" class="form-control" id="pwdcheck" placeholder="비밀번호확인..." />
+            </div>
+            <div class="mb-3">
+              <label for="emailid" class="form-label">이메일 : </label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="emailid" placeholder="이메일아이디" />
+                <span class="input-group-text">@</span>
+                <select class="form-select" id="emaildomain" aria-label="이메일 도메인 선택">
+                  <option selected>선택</option>
+                  <option value="ssafy.com">싸피</option>
+                  <option value="google.com">구글</option>
+                  <option value="naver.com">네이버</option>
+                  <option value="kakao.com">카카오</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="btn-join" class="btn btn-outline-primary" data-bs-dismiss="modal">
+              회원가입
+            </button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 회원 정보 모달 -->
+    <div
+      class="modal fade"
+      id="userViewModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><mark class="purple">회원 정보</mark></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <colgroup>
+                <col width="120" />
+                <col width="*" />
+                <col width="120" />
+                <col width="*" />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th class="text-center">ID</th>
+                  <td class="text-left" id="vid"></td>
+                  <th class="text-center">회원명</th>
+                  <td class="text-left" id="vname"></td>
+                </tr>
+                <tr>
+                  <th class="text-center">이메일</th>
+                  <td class="text-left" id="vemail" colspan="3"></td>
+                </tr>
+                <tr>
+                  <th class="text-center">가입일</th>
+                  <td class="text-left" id="vjoindate" colspan="3"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="form-param" method="get" action="">
+      <input type="hidden" id="pgno" name="pgno" value="${pgno}" />
+      <input type="hidden" name="key" value="${key}" />
+      <input type="hidden" name="word" value="${word}" />
+    </form>
+    <form id="form-no-param" method="get" action="${root}/board/view">
+      <input type="hidden" name="pgno" value="${pgno}" />
+      <input type="hidden" name="key" value="${key}" />
+      <input type="hidden" name="word" value="${word}" />
+      <input type="hidden" id="articleno" name="articleno" value="" />
+    </form>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 추가 -->
+    <script>
+      let root = "/board"; // jstl 사용 불가능해서
+
+      // 회원 목록
+      // 목록을 불러오기 위해서 서버로 가야한다.
+      // 페이지 이동 X
+      // ${root}는 위에있는 root변수를 의미
+      // admin이라는 이름의 컨트롤러 만들기(관리자용)
+      // user => 사용자 관리
+      fetch(`${root}/admin/user`) // default는 GET, Post로 지정하고 싶으면 적자
+      .then((response) => response.json()) // response의 json값들을 얻어서 then으로 보내준다.
+      //.then((data)=>console.log(data)); // data가 잘 넘어왔는지 확인
+      .then((data)=>{makeList(data)});  // 아래 메소드 호출
+
+
+      //회원 등록
+      document.querySelector("#btn-join").addEventListener("click", function(){
+
+        // 기입한 회원 정보를 가져가야 함
+        let registerInfo = {
+          userId: document.querySelector("#userid").value,
+          userName: document.querySelector("#username").value,
+          userPwd: document.querySelector("#userpwd").value,
+          emailId: document.querySelector("#emailid").value,
+          emailDomain: document.querySelector("#emaildomain").value,
+        };
+
+        let config = {
+          method : "POST",
+          headers : {"Content-Type" : "application/json"},
+          body : JSON.stringify(registerInfo), // 객체를 넘기는 게 아니라서 객체를 json의 문자열로 바꿔야한다. = 직렬화
+        };
+
+        // insert => POST 방식으로 가야함
+        // config 만들기
+        fetch(`${root}/admin/user`, config) 
+          .then((response) => response.json()) 
+          .then((data)=>{makeList(data)}); 
+      });
+
+
+      // 더블 클릭시 userView 호출(사용자 정보) - 회원 상세 정보
+      function userView(el){
+        // boostrap5 기술 문서에 나와 있음
+        var modal = new bootstrap.Modal(document.getElementById('userViewModal'), {
+          backdrop: false, // 뒤에가 뿌옇게되는 모달창
+          keyboard: false, // true => esc를 눌렀을 때 사라짐 결정
+        });
+
+        let id = el.getAttribute("data-id");
+        fetch(`${root}/admin/user/${id}`) 
+          .then((response) => response.json()) 
+          // .then((data)=> console.log(data));  
+          .then((data) => {
+            document.querySelector("#vid").innerText = data.userId; 
+            document.querySelector("#vname").innerText = data.userName; 
+            document.querySelector("#vemail").innerText = data.emailId + "@" + data.emailDomain ; 
+            document.querySelector("#vjoindate").innerText = data.joinDate; 
+            modal.show();
+            // document.querySelector("#userViewModal").modal(show); => 이거는 jquery에서 지원
+          });  
+      }
+
+      /*
+      C - insert = POST 전달
+      S - select = Get 얻어온다
+      U - update = PUT 바꿔치기
+      D - delete = DELETE
+      */
+
+      // 수정 페이지 보기
+      function viewModify(el){
+          // console.log(el); // <button type="button" class="modifyViewBtn btn btn-outline-primary btn-sm" onclick="viewModify(this);">수정</button>
+          // data-id="${user.userId}" 이 값을 얻어 와야함
+          //console.log(el.parentNode.parentNode.getAttribute("data-id"));
+          let id = el.parentNode.parentNode.getAttribute("data-id");
+          document.querySelector(`#view_${id}`).setAttribute("style", "display:none;");
+          document.querySelector(`#mview_${id}`).setAttribute("style", "display:;");
+      }
+
+      // 수정 페이지 닫기
+      function closeModify(el){
+          let id = el.parentNode.parentNode.getAttribute("data-id");
+          document.querySelector(`#view_${id}`).setAttribute("style", "display:;");
+          document.querySelector(`#mview_${id}`).setAttribute("style", "display:none;");
+      }
+
+      // 회원 정보 수정 
+      function userModify(el){
+        let id = el.parentNode.parentNode.getAttribute("data-id"); // 수정할 사람의 id 얻어오기
+
+        // 비밀번호와 이메일만 바꿀 수 있음
+        let pwd = document.querySelector(`#userpwd${id}`).value;
+        let email = document.querySelector(`#email${id}`).value.split("@"); // 배열로 쪼갬
+
+        //=> 가입과 방식은 똑같지만 POST가 PUT으로 바뀐다.
+        let modifyInfo = {
+          userId: id,
+          userPwd: pwd,
+          emailId: email[0],
+          emailDomain: email[1],
+        };
+
+        let config = {
+          method : "PUT",
+          headers : {"Content-Type" : "application/json"},
+          body : JSON.stringify(modifyInfo), 
+        };
+
+        fetch(`${root}/admin/user`, config) 
+          .then((response) => response.json()) 
+          .then((data)=>{makeList(data)}); 
+      }
+
+      // 회원 정보 삭제 
+      function deleteUser(el){
+          let id = el.parentNode.parentNode.getAttribute("data-id");
+          // 위에 viewModify(el)과 ${root}/admin/user/${id} GET방식으로 겹치기 떄문에 config를 추가
+          let config = {
+            method : "DELETE",
+            headers : {"Content-Type" : "application/json"}, // application/json으로 넘겨주고 받기 위해
+          };
+
+          fetch(`${root}/admin/user/${id}`, config)  // rest로 바뀌면서 쿼리스트링(?name=value) 말고 pathvaribale로 넘김
+          // 검색할 id 보내기
+          .then((response) => response.json()) 
+          .then((data)=>makeList(data));  
+      }
+      
+
+      // <button type="button" class="modifyViewBtn btn btn-outline-primary btn-sm" onclick="viewModify(this);">수정</button>
+      // onclick="viewModify(this); 여기서 this는 해당 버튼 의미
+      function makeList(users) {
+        let tbody = ``;
+        users.forEach(function (user) { // 사용자 목록 띄우기
+          tbody += `
+						<tr id="view_${user.userId}" class="view text-center" data-id="${user.userId}" ondblclick="userView(this);">
+							<td>${user.userId}</td>
+							<td>${user.userPwd}</td>
+							<td>${user.userName}</td>
+							<td>${user.emailId}@${user.emailDomain}</td>
+							<td>${user.joinDate}</td>
+							<td>
+								<button type="button" class="modifyViewBtn btn btn-outline-primary btn-sm" onclick="viewModify(this);">수정</button>
+								<button type="button" class="deleteBtn btn btn-outline-danger btn-sm" onclick="deleteUser(this);">삭제</button>
+							</td>
+						</tr>
+						<tr id="mview_${user.userId}" data-id="${user.userId}" style="display: none;" class="text-center">
+							<td>${user.userId}</td>
+							<td><input type="text" name="userpwd" id="userpwd${user.userId}" value="${user.userPwd}"></td>
+							<td>${user.userName}</td>
+							<td><input type="text" name="email" id="email${user.userId}" value="${user.emailId}@${user.emailDomain}"></td>
+							<td>${user.joinDate}</td>
+							<td>
+								<button type="button" class="modifyBtn btn btn-primary btn-sm" onclick="userModify(this);">수정</button>
+								<button type="button" class="cancelBtn btn btn-danger btn-sm" onclick="closeModify(this);">취소</button>
+							</td>
+						</tr>
+					`;
+        });
+        document.querySelector("#userlist").innerHTML = tbody;
+      }
+    </script>
+    
+  </body>
+</html>

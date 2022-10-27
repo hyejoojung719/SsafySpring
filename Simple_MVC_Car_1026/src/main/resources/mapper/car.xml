@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.mvc.model.mapper.CarMapper">
+	<!-- 차 전체 조회 -->
+	<select id="selectAll" resultType="car">
+		select number, model, price, brand
+		from car
+	</select>
+
+	<!-- 차 등록 -->
+	<insert id="insertCar" parameterType="car">
+		insert into car (number, model, price, brand)
+		values (#{number}, #{model}, #{price}, #{brand})
+	</insert>
+	
+	<!-- 이미지 등록 -->
+	<insert id="insertFileInfo" parameterType="car">
+		insert into fileInfo (number, saveFolder, saveFile, originFile)
+		values (#{fileInfo.number}, #{fileInfo.saveFolder}, #{fileInfo.saveFile}, #{fileInfo.originFile})
+	</insert>
+
+	<!-- 차 상세 조회 -->
+	<select id="selectByNumber" parameterType="String" resultMap="CarFile">
+		select c.number, c.model, c.price, c.brand, f.number f_number, f.saveFolder, f.saveFile, f.originFile
+		from car c
+		left join fileInfo f
+		using (number)
+		where c.number=#{number}
+	</select>
+	<resultMap type="car" id="CarFile">
+		<id column="number" property="number"/>
+		<result column="model" property="model"/>
+		<result column="price" property="price"/>
+		<result column="brand" property="brand"/>
+		<association property="fileInfo">
+			<result column="f_number" property="number"/>
+			<result column="saveFolder" property="saveFolder"/>
+			<result column="saveFile" property="saveFile"/>
+			<result column="originFile" property="originFile"/>
+		</association>
+	</resultMap>
+
+</mapper>

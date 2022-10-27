@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- DataSource 빈 등록 -->
+	<!-- 스프링 쪽에서 connection Pool 관리 -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"> 
+		<property value="com.mysql.cj.jdbc.Driver" name="driverClassName"></property> 
+		<property value="jdbc:mysql://localhost:3306/bookdb?serverTimezone=UTC" name="url"></property> 
+		<property value="ssafy" name="username"></property> <property value="ssafy" 
+		name="password"></property> </bean> -->
+
+	<!-- 톰캣에서 관리중인 객체 가져오기 -->
+	<bean id="dataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/ssafy"></property>
+	</bean>
+
+
+
+	<context:component-scan
+		base-package="com.ssafy.mvc.model,com.ssafy.mvc.aop"></context:component-scan>
+
+	<!-- 빈 등록 시, 자동으로 프록시 객체 생성가능하게 해줌(Pointcut으로 지정된 클래스의 경우) -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+	<!-- myBatis 설정 -->
+	<!-- 1. SqlSessionFactory 빈 등록 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- DataSource -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- typeAlias -->
+		<property name="typeAliasesPackage" value="com.ssafy.mvc.dto"></property>
+		<!-- mapper.xml의 경로 -->
+		<property name="mapperLocations"
+			value="classpath:mapper/*.xml"></property>
+	</bean>
+
+
+	<!-- myBatis Mapper 빈 등록 -->
+	<!-- myBatis-spring:scan은 패키지의 모든 인터페이스를 mapper 빈으로 등록 -->
+	<!-- annotation 속성을 통해 설정된 어노테이션으로 내가 원하는 인터페이스만 mapper 빈으로 등록 가능 -->
+	<mybatis-spring:scan
+		base-package="com.ssafy.mvc.model"
+		annotation="org.apache.ibatis.annotations.Mapper" />
+
+
+	<!-- 트랜잭션 설정 -->
+	<!-- transaction manager 빈 등록 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- @Transactional 사용을 위한 설정 -->
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+</beans>
